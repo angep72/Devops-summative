@@ -1,0 +1,28 @@
+name: React CI Pipeline
+
+on:
+  pull_request:
+    branches: [ main, develop ] # Adjust as needed
+
+jobs:
+  build-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # or your project's version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm test -- --watchAll=false --ci
