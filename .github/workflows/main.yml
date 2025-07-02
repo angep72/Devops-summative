@@ -1,4 +1,4 @@
-name: React CI Pipeline
+name: React Ci Pipeline
 
 on:
   pull_request:
