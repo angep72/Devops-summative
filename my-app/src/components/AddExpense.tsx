@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, DollarSign, Calendar, Tag, FileText } from 'lucide-react';
-import { Expense, EXPENSE_CATEGORIES } from '../types';
+import { Expense, EXPENSE_CATEGORIES,User } from '../types';
 import { storageUtils } from '../utils/storage';
 
 interface AddExpenseProps {
-  currentUser: any;
+  currentUser: User;
   onExpenseAdded: () => void;
 }
 

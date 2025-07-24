@@ -2,6 +2,7 @@
   "name": "vite-react-typescript-starter",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -9,7 +10,7 @@
     "start": "vite",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint ."
   },
   "dependencies": {
     "lucide-react": "^0.344.0",

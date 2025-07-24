@@ -1,9 +1,10 @@
 import React from 'react';
 import { User, LogOut, PieChart, Plus, List, Settings } from 'lucide-react';
+import {User as Users} from '../types';
 
 interface LayoutProps {
   children: React.ReactNode;
-  currentUser: any;
+  currentUser: Users;
   currentTab: string;
   onTabChange: (tab: string) => void;
   onLogout: () => void;
