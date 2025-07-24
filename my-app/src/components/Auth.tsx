@@ -22,7 +22,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     setError('');
 
     if (isLogin) {
-      // Login logic
+      // Login logic Setting up user registration and login 
       const user = storageUtils.getUserByEmail(formData.email);
       if (user) {
         storageUtils.setCurrentUser(user);
