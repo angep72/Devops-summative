@@ -86,7 +86,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onExpenseUpdated })
         <h2 className="text-2xl font-bold text-gray-900">Expenses</h2>
       </div>
 
-      {/* Filters */}
+      {/* Filters  handling expenses */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
