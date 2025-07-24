@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign, AlertTriangle } from 'lucide-react';
-import { User, Expense, CategoryBudget } from '../types';
+import { User, Expense } from '../types';
 import { calculateMonthlySpending, calculateCategoryBudgets, getMonthlyTrends, formatCurrency } from '../utils/calculations';
 
 interface DashboardProps {
