@@ -44,7 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ currentUser, expenses }) => {
         </p>
       </div>
 
-      {/* Summary Cards */}
+      {/* Summary Cards for user profile*/}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
