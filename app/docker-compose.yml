@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      # Mount the source code for development, allowing hot-reloads (if configured in React)
+      # For a production-ready image, you wouldn't typically mount the source.
+      # For development, you might want to run `npm start` inside the container.
+      # However, since the Dockerfile builds the app, this is more for serving the built app.
+      # If you want live development with React's dev server, the Dockerfile and compose file
+      # would look different (e.g., running `npm start` and exposing a different port).
+      # For the purpose of getting a production-like build working locally, this is fine.
+      - ./build:/usr/share/nginx/html # Mount the build directory to Nginx's html
+    environment:
+      # Example environment variables (adjust as needed for your app)
+      REACT_APP_API_URL: http://localhost:PORT_OF_YOUR_BACKEND
+    restart: unless-stopped
