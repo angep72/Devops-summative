@@ -25,6 +25,11 @@ dist-ssr
 .env
 .terraform/
 *.exe
+# Terraform state files (contain secrets)
+*.tfstate
+*.tfstate.backup
+.terraform/
+
 
 
 
