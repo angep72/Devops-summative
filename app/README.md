@@ -49,7 +49,7 @@ To get the application running locally in a containerized environment:
     cd app
     ```
 2.  **Build and Run with Docker Compose:**
-    Ensure you are in the root directory of the project (where `docker-compose.yml` and `Dockerfile` are located).
+    Ensure you are in the root directory of the projects (where `docker-compose.yml` and `Dockerfile` are located).
     ```bash
     docker-compose up --build
     ```
