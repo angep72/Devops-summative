@@ -1,18 +1,20 @@
-name: React Ci Pipeline
+name: React CI/CD Pipeline
 
 on:
   pull_request:
     branches: [ main, develop ]
+  push:
+    branches: [ main ]
 
 jobs:
-  build-and-test:
-    name: Lint & Test
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # CI: Build, Lint, Test
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,3 +31,55 @@ jobs:
       - name: Run Unit Tests
         run: npm test -- --watchAll=false --ci
         working-directory: app
+      
+      # DevSecOps: Dependency Scanning
+      - name: Dependency vulnerability scan
+        run: npm audit --audit-level=high || true
+        working-directory: app
+      
+      # ----------------------------------------------------
+     # ----------------------------------------------------
+      # New Steps for CD (Azure)
+      # ----------------------------------------------------
+      - name: 'Login to Azure'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true 
+      
+      - name: 'Docker Login to ACR'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: azure/docker-login@v1
+        with:
+          login-server: personaltrackerfrontendacr.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: 'Build and Push Docker Image'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker build -t personaltrackerfrontendacr.azurecr.io/personal-tracker-frontend:latest ./app
+          docker push personaltrackerfrontendacr.azurecr.io/personal-tracker-frontend:latest
+
+      # DevSecOps: Container Image Scanning
+      - name: 'Scan image for vulnerabilities'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: personaltrackerfrontendacr.azurecr.io/personal-tracker-frontend:latest
+          format: 'table'
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'
+
+      # Continuous Deployment: Deploy to Azure Container Apps
+      - name: 'Deploy to Azure Container Apps'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: app
+          imageToDeploy: personaltrackerfrontendacr.azurecr.io/personal-tracker-frontend:latest
+          containerAppName: personal-tracker-app 
+          resourceGroup: rg-personal-tracker-frontend
+          location: southafricanorth
+          environmentName: MyContainerappEnvironment 
