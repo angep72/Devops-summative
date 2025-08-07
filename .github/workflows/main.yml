@@ -71,15 +71,19 @@ jobs:
           format: 'table'
           severity: 'HIGH,CRITICAL'
           exit-code: '1'
-
-      # Continuous Deployment: Deploy to Azure Container Apps
+    # Continuous Deployment: Deploy to Azure Container Apps
       - name: 'Deploy to Azure Container Apps'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: app
+          # We are deploying a pre-built image, so we don't need appSourcePath
+          # appSourcePath: app
+
           imageToDeploy: personaltrackerfrontendacr.azurecr.io/personal-tracker-frontend:latest
-          containerAppName: personal-tracker-app 
+          containerAppName: personal-tracker-app
           resourceGroup: rg-personal-tracker-frontend
           location: southafricanorth
-          environmentName: MyContainerappEnvironment 
+          containerAppEnvironment: MyContainerappEnvironment
+          acrName: personaltrackerfrontendacr
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
